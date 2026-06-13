@@ -30,12 +30,12 @@ in
   # 4. Target Node Settings
   nas0 = { name, nodes, ... }: {
     deployment = {
-      targetHost = "nas0-vm";
+      targetHost = "nas0";
       targetUser = "operateur";
       tags = [ "prod" "web" ];
     };
     imports = [
-      ./hosts/nas0
+      ./hosts/nas0-vm
     ];
     # Configure the machine to respect the npins pin natively
     nix = {
