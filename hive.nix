@@ -30,8 +30,8 @@ in
   # 4. Target Node Settings
   nas0 = { name, nodes, ... }: {
     deployment = {
-      targetHost = "nas0";
-      targetUser = "root";
+      targetHost = "nas0-vm";
+      targetUser = "operateur";
       tags = [ "prod" "web" ];
     };
     imports = [
