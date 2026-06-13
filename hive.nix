@@ -28,14 +28,14 @@ in
   };
 
   # 4. Target Node Settings
-  xplode = { name, nodes, ... }: {
+  nas0 = { name, nodes, ... }: {
     deployment = {
-      targetHost = "xplode";
+      targetHost = "nas0";
       targetUser = "root";
       tags = [ "prod" "web" ];
     };
     imports = [
-      ./hosts/xplode-vm
+      ./hosts/nas0
     ];
     # Configure the machine to respect the npins pin natively
     nix = {
