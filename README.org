@@ -1,13 +1,13 @@
 #+title: Readme
 
-# TestLab
+* TestLab
 
-## Setup
+** Setup
 
 - Une machine physique sous Nixos avec un hyperviseur Xen
 - Des noeuds sous Nixos et peut être plus tard Ublue Ucore
 
-## notes
+** notes
 
 - Mes configs sont à l'origine des *flakes*, j'ai pour ojectif de migrer sur du sans *flakes*
 - Je teste [Colmena](https://colmena.cli.rs/unstable/) pour déployer les configs Nixos
