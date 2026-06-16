@@ -27,7 +27,18 @@ npins add github nix-community preservation main
 
 Après tout ça il doit y avoir un dossier ~npins~ à la racine du projet, qui contient les adresses des sources des packages nix et leurs version.
 
+Ensuite, pour que *npins* soit pris en compte par la configuration *Nixos*, il faut modifier le fichier en y ajoutant au début quelquechose comme ça:
+
+#+BEGIN_SRC nix
+let
+  sources = import ./npins;
+  pkgs = import sources.nixpkgs {};
+in
+[...]
+#+END_SRC
+
 ** Colmena
+
 Je teste d'abord aec une vm existante pour voir comment ça fait. Les échecs d'abord :
 - ça compile sur la machine d'où est lancé colmena, donc il faut que ce soit la même archi. J'ai testé depuis un Macbook, pour provisionner ma vm x86, ça a planté
 - je me connecte en ssh avec Tailscale ssh parce que je suis fainéant, mais du coup j'avais pas de clé configurées dans les machines hôte / cible, ça a planté parce que la connexion ssh a été refusé par la cible
@@ -93,6 +104,94 @@ Pour la config, je pars sur quelquechose de simple, une vm. Le point d'ntrée se
     ];
   };
 }
+#+END_SRC
+
+** Les deux ensemble
+Je pars du principe que ma configuration nixos et donc mon fichier ~hive.nix~ se situe dans un dossier qui sera mon projet. J'initialise *npins* depuis la racine de ce projet qui possède donc un dossier ~npins/~ dans le même repertoire que ~hive.nix~. Je positionne donc ma référence à npins en tête du fichier ~hive.nix~.
+
+#+BEGIN_SRC nix
+let
+  sources = import ./npins;
+in
+{
+[...]
+#+END_SRC
+
+Ensuite je passe la réf à *npins* dans le block ~meta~ de mon fichier ~hive.nix~.
+
+#+BEGIN_SRC nix
+{
+  meta = {
+    ...
+    specialArgs = { inherit sources; };
+    ...
+[...]
+#+END_SRC
+
+Enfin pour chaque machine je configure *nix*  (le package manager) de sorte qu'il utilise *npins*.
+
+#+BEGIN_SRC nix
+  ...
+  defaults = {
+    # Configure the machine to respect the npins pin natively
+    nix = {
+      channel.enable = false;
+      nixPath = [ "nixpkgs=${sources.nixpkgs}" ];
+    };
+  ...
+#+END_SRC
+
+La config complète donne ça pour un seul noeud nommé *nas0* :
+#+BEGIN_SRC nix
+
+let
+  sources = import ./npins;
+in
+{
+  meta = {
+    # 1. Use the pinned nixpkgs source folder from npins
+    nixpkgs = import sources.nixpkgs {
+      stdenv.hostPlatform.system = "x86_64-linux";
+      config = {};
+      overlays = [];
+    };
+
+    # 2. Pass npins references to nodes via special arguments
+    specialArgs = { inherit sources; };
+  };
+
+  # 3. Apply settings universally across all nodes
+  defaults = {
+    imports = [
+      (sources.disko + "/module.nix")
+      (sources.preservation + "/module.nix")
+      ./modules/administration.nix
+      ./modules/localisation.nix
+      ./modules/settings.nix
+      ./modules/usefull_tools.nix
+      ./modules/users
+    ];
+    # Configure all machines to respect the npins pin natively
+    nix = {
+      channel.enable = false;
+      nixPath = [ "nixpkgs=${sources.nixpkgs}" ];
+    };
+
+  };
+
+  # 4. Target Node Settings
+  nas0 = { name, nodes, ... }: {
+    deployment = {
+      targetHost = "nas0";
+      targetUser = "operateur";
+      tags = [ "prod" "web" ];
+    };
+    imports = [
+      ./hosts/nas0-vm
+    ];
+  };
+}
+
 #+END_SRC
 ** notes
 
