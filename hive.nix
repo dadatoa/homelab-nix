@@ -34,11 +34,26 @@ in
   };
 
   # 4. Target Node Settings
+  xplode = { name, nodes }: {
+    imports = [
+      ./hosts/xplode-vm
+    ];
+    deployment = {
+      # Allow local deployment with `colmena apply-local`
+      allowLocalDeployment = true;
+
+      # Disable SSH deployment. This node will be skipped in a
+      # normal`colmena apply`.
+      targetHost = null;
+      tags = [ "prod" "test" ];
+    };
+  };
+
   nas0 = { name, nodes, ... }: {
     deployment = {
       targetHost = "nas0";
       targetUser = "operateur";
-      tags = [ "prod" "web" ];
+      tags = [ "prod" ];
     };
     imports = [
       ./hosts/nas0-vm
