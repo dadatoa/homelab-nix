@@ -20,8 +20,8 @@
       "type": "Channel",
       "name": "nixos-26.05",
       "artifact": "nixexprs.tar.xz",
-      "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.1550.bd0ff2d3eac2/nixexprs.tar.xz",
-      "hash": "sha256-YMnBf9lk/LYgvqfmSSJuOGigtRs5Lsy26pJHVlR9yMY="
+      "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.1947.a0374025a863/nixexprs.tar.xz",
+      "hash": "sha256-PoRRDfm1khYEJCk5KyX4Snud03VzRcmxKil5n6drTI0="
     },
     "preservation": {
       "type": "Git",
