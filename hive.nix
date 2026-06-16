@@ -34,7 +34,7 @@ in
   };
 
   # 4. Target Node Settings
-  xplode = { name, nodes }: {
+  xplode = { name, nodes, ... }: {
     imports = [
       ./hosts/xplode-vm
     ];
@@ -45,7 +45,7 @@ in
       # Disable SSH deployment. This node will be skipped in a
       # normal`colmena apply`.
       targetHost = null;
-      tags = [ "prod" "test" ];
+      tags = [ "local" ];
     };
   };
 
