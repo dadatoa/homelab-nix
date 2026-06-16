@@ -2,13 +2,98 @@
 
 * TestLab
 
-** Setup
+** Intro
 
-- Une machine physique sous Nixos avec un hyperviseur Xen
-- Des noeuds sous Nixos et peut être plus tard Ublue Ucore
+Mon HomeLab se compose d'un PC Prodesk avec un I5 (gen9), sur lequel est installé un hyperviseur XEN et Nixos sur le Dom0. J'ai suivi [[https://wiki.nixos.org/wiki/Xen_Project_Hypervisor][la doc du wiki]]. La-dessus je mets des vm Nixos que je souhaite provisionner le plus automatiquement possible. Jusque là j'utilisait un système de flake, mais j'aieu envie de changer pour du *flakeless* et un moyen de tout déployer en même temps. Pour cela je migre vers [[https://github.com/andir/npins][npins]] pour verrouller et tracker les dépendance (remplace nix flake lock) et [[https://colmena.cli.rs/unstable5/][colmena]] pour le déploiement automatique.
 
+Il y a un inconvénient notable à ce système : colmena et npins ne peuvent être installer que sur des systèmes Nix éxistant. Je ne peux pas bootstapper une machine directement les utilisant.
+
+** Npins
+Npins s'initialise dans un repertoire local (par exemple à la racine du projet). Pas de root. Ce n'est pas utile de l'installer globalement, je l'utilise dans un shell de développement.
+
+#+BEGIN_SRC bash
+# lance un shell avec npins - j'ai activé nix-experimental-features = "command flake" dans mes configurations nix
+# sinon 'nix-shell -p npins' marche aussi
+nix shell nixpkgs#npins
+# initialise npins
+npins init --bare
+# ajoute le channel 26.05 ( stable au moment de l'écriture) de nixos
+npins add --name nixpkgs nixos-26.05
+# j'ajoute aussi les dépôts de disko et preservation que j'utilise dans le cadre de setup impermanent
+npins add github nix-community disko
+# pour une raison que j'ignore, je dois préciser la branche main pour le dépôt preservation
+npins add github nix-community preservation main
+#+END_SRC
+
+Après tout ça il doit y avoir un dossier ~npins~ à la racine du projet, qui contient les adresses des sources des packages nix et leurs version.
+
+** Colmena
+Je teste d'abord aec une vm existante pour voir comment ça fait. Les échecs d'abord :
+- ça compile sur la machine d'où est lancé colmena, donc il faut que ce soit la même archi. J'ai testé depuis un Macbook, pour provisionner ma vm x86, ça a planté
+- je me connecte en ssh avec Tailscale ssh parce que je suis fainéant, mais du coup j'avais pas de clé configurées dans les machines hôte / cible, ça a planté parce que la connexion ssh a été refusé par la cible
+
+Il me faut donc deux machine x86, ou une seule mais qui s'autoprvisionne, avec nixos installé. Sur la cible je me suis assuré que l'utilisateur pouvait ~sudo~ sans password.
+
+Pour la config, je pars sur quelquechose de simple, une vm. Le point d'ntrée se fait dans un fichier ~hive.nix~.
+
+#+NAME: hive.nix
+#+BEGIN_SRC nix
+{
+  meta = {
+    # Override to pin the Nixpkgs version (recommended). This option
+    # accepts one of the following:
+    # - A path to a Nixpkgs checkout
+    # - The Nixpkgs lambda (e.g., import <nixpkgs>)
+    # - An initialized Nixpkgs attribute set
+    nixpkgs = <nixpkgs>;
+
+    # If your Colmena host has nix configured to allow for remote builds
+    # (for nix-daemon, your user being included in trusted-users)
+    # you can set a machines file that will be passed to the underlying
+    # nix-store command during derivation realization as a builders option.
+    # For example, if you support multiple orginizations each with their own
+    # build machine(s) you can ensure that builds only take place on your
+    # local machine and/or the machines specified in this file.
+    # machinesFile = ./machines.client-a;
+  };
+
+  defaults = { pkgs, ... }: {
+    # This module will be imported by all hosts
+    # I split my config in differents files so I import nix files here for
+    # comon configs accross hosts
+    imports = [
+        moduleA.nix
+        moduleB.nix
+    ];
+
+    # By default, Colmena will replace unknown remote profile
+    # (unknown means the profile isn't in the nix store on the
+    # host running Colmena) during apply (with the default goal,
+    # boot, and switch).
+    # If you share a hive with others, or use multiple machines,
+    # and are not careful to always commit/push/pull changes
+    # you can accidentaly overwrite a remote profile so in those
+    # scenarios you might want to change this default to false.
+    # deployment.replaceUnknownProfiles = true;
+  };
+
+  host-a = { name, nodes, ... }: {
+    # The name and nodes parameters are supported in Colmena,
+    # allowing you to reference configurations in other nodes.
+    deployment = {
+    targetHost = "nas0";
+    targetUser = "operateur";
+    tags = [ "prod" "web" ];
+    };
+    # same as for defaults : I import my machine specific config
+    # file instead of having all th config options in one file
+    # for better readability
+    imports = [
+      ./hosts/nas0-vm
+    ];
+  };
+}
+#+END_SRC
 ** notes
 
-- Mes configs sont à l'origine des *flakes*, j'ai pour ojectif de migrer sur du sans *flakes*
-- Je teste [[https://colmena.cli.rs/unstable][colmena]] pour déployer les configs Nixos
-- Je pin les dépedances des systèmes avec [[https://github.com/andir/npins][npins]]
+- faudra mettre tout dans un Devenv
