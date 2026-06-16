@@ -25,6 +25,12 @@ in
       ./modules/usefull_tools.nix
       ./modules/users
     ];
+    # Configure all machines to respect the npins pin natively
+    nix = {
+      channel.enable = false;
+      nixPath = [ "nixpkgs=${sources.nixpkgs}" ];
+    };
+
   };
 
   # 4. Target Node Settings
@@ -37,12 +43,6 @@ in
     imports = [
       ./hosts/nas0-vm
     ];
-    # Configure the machine to respect the npins pin natively
-    nix = {
-      channel.enable = false;
-      nixPath = [ "nixpkgs=${sources.nixpkgs}" ];
-    };
-
   };
 }
 
