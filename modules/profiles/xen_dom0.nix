@@ -2,7 +2,7 @@
 {
   imports =
     [
-      ./nixos_bm.nix
+      # ./nixos_bm.nix
     ];
   ###
   ### Xen project boot options

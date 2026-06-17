@@ -44,11 +44,21 @@ in
 
       # Disable SSH deployment. This node will be skipped in a
       # normal`colmena apply`.
-      targetHost = null;
+      # targetHost = null;
       tags = [ "local" ];
     };
   };
 
+  xen = { name, nodes, ... }: {
+    deployment = {
+      targetHost = "xen";
+      targetUser = "operateur";
+      tags = [ "prod" ];
+    };
+    imports = [
+      ./hosts/impermanent-xen
+    ];
+  };
   nas0 = { name, nodes, ... }: {
     deployment = {
       targetHost = "nas0";
