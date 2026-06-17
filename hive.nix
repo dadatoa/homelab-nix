@@ -44,7 +44,7 @@ in
 
       # Disable SSH deployment. This node will be skipped in a
       # normal`colmena apply`.
-      # targetHost = null;
+      targetHost = null;
       tags = [ "local" ];
     };
   };
