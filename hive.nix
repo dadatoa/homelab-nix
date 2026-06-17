@@ -51,7 +51,7 @@ in
 
   xen = { name, nodes, ... }: {
     deployment = {
-      targetHost = "xen";
+      targetHost = "xen.local";
       targetUser = "operateur";
       tags = [ "prod" ];
     };
@@ -61,7 +61,7 @@ in
   };
   nas0 = { name, nodes, ... }: {
     deployment = {
-      targetHost = "nas0";
+      targetHost = "nas0.local";
       targetUser = "operateur";
       tags = [ "prod" ];
     };
