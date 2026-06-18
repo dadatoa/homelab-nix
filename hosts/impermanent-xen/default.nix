@@ -7,6 +7,7 @@
       ./disko.nix
       ./preservation.nix
       ../../modules/remote_access.nix
+      ../../modules/profiles/xen_dom0.nix
     ];
 
   # DO NOT TOUCH
