@@ -35,8 +35,8 @@
   # boot.loader.systemd-boot.netbootxyz.enable = true;
 
   users.users.root = {
-    # hashedPasswordFile = "/run/secrets/root-password.txt"; 
-    initialHashedPassword = lib.strings.fileContents /run/secrets/root-password.txt;
+    hashedPasswordFile = "/run/secrets/root-password.txt";
+    # initialHashedPassword = lib.strings.fileContents /run/secrets/root-password.txt;
   };
   users.users.operateur = {
     extraGroups = [ "wheel" ];
