@@ -49,11 +49,10 @@ jobs:
           Host external-machine
             HostName $SSH_HOST
             User $SSH_USER
-            Port $SSH_PORT
             IdentityFile ~/.ssh/external-machine.key
             StrictHostKeyChecking no
           END
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
       - name: "deployment"
         run: |
           colmena build --on @dom0
