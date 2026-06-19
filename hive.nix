@@ -31,7 +31,7 @@ in
       channel.enable = false;
       nixPath = [ "nixpkgs=${sources.nixpkgs}" ];
     };
-    deployement.builOnTarget = true;
+    deployment.builOnTarget = true;
 
   };
 
