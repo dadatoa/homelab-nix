@@ -1,6 +1,7 @@
 let
   sources = import ./npins;
 in
+
 {
   meta = {
     # 1. Use the pinned nixpkgs source folder from npins
@@ -30,6 +31,7 @@ in
       channel.enable = false;
       nixPath = [ "nixpkgs=${sources.nixpkgs}" ];
     };
+    deployement.builOnTarget = true;
 
   };
 
@@ -41,19 +43,20 @@ in
     deployment = {
       # Allow local deployment with `colmena apply-local`
       allowLocalDeployment = true;
-
       # Disable SSH deployment. This node will be skipped in a
       # normal`colmena apply`.
-      targetHost = null;
+      # targetHost = null;
+      targetHost = "xplode.blue-edmontosaurus.ts.net";
+      targetUser = "operateur";
       tags = [ "domu" ];
     };
   };
 
   xen = { name, nodes, ... }: {
     deployment = {
-      targetHost = "xen.local";
+      targetHost = "xen.blue-edmontosaurus.ts.net";
       targetUser = "operateur";
-      tags = [ "dom0" ];
+      tags = [ "dom0" "remote" ];
     };
     imports = [
       ./hosts/impermanent-xen
@@ -61,9 +64,9 @@ in
   };
   nas0 = { name, nodes, ... }: {
     deployment = {
-      targetHost = "nas0.local";
+      targetHost = "nas0.blue-edmontosaurus.ts.net";
       targetUser = "operateur";
-      tags = [ "domu" ];
+      tags = [ "domu" "remote" ];
     };
     imports = [
       ./hosts/nas0-vm
