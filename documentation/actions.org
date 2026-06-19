@@ -1,0 +1,12 @@
+#+title: Actions
+
+
+* Github: déployer les configs avec colmena
+
+Pour info : les actions github sont des fichier ~.yml~ situées dans le repertoire ~.github/workflows~.
+
+
+#+Property: Header-args :tangle ../.github/workflows/deployment.yml
+#+BEGIN_SRC yaml
+name: deploy nixos configurations
+#+END_SRC
