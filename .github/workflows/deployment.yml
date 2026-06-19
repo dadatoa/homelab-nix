@@ -21,8 +21,8 @@ jobs:
       - name: "Tailscale"
         uses: tailscale/github-action@v4
         with:
-          oauth-client-id: ${{ Tailscale.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ Tailscale.TS_OAUTH_SECRET }}
+          oauth-client-id: ${{ tailscale.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ tailscale.TS_OAUTH_SECRET }}
           tags: tag:testlab
           ping: xen.blue-edmontosaurus.ts.net
       - name: "Configure SSH"
