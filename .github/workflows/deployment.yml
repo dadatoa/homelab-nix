@@ -42,7 +42,7 @@ jobs:
             IdentityFile ~/.ssh/external-machine.key
             StrictHostKeyChecking no
           END
-          ssh-keyscan ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan ${{ SSH_HOST }} >> ~/.ssh/known_hosts
       - name: "deployment"
         run: |
           colmena build --on @dom0
