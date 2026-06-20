@@ -6,7 +6,6 @@
       ./hardware-configuration.nix
       ./disko.nix
       ./preservation.nix
-      ../../modules/remote_access.nix
       ../../modules/profiles/xen_dom0.nix
     ];
 
@@ -34,16 +33,6 @@
 
   # boot.loader.systemd-boot.netbootxyz.enable = true;
 
-  users.users.root = {
-    hashedPasswordFile = "/run/secrets/root-password.txt";
-    # initialHashedPassword = lib.strings.fileContents /run/secrets/root-password.txt;
-  };
-  users.users.operateur = {
-    extraGroups = [ "wheel" ];
-    };
-
-  security.sudo.wheelNeedsPassword = false;
-  
   networking.hostName = "xen";
   
   networking.firewall.enable = false;

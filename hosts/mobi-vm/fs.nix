@@ -5,7 +5,7 @@
       options = [ "size=25%" "mode=755" ]; # mode=755 so only root can write to those files
     };
 
-  fileSystems."/nix". = {
+  fileSystems."/nix" = {
     neededForBoot = true;
     device = "/dev/disk/by-uuid/32b18bfa-0240-4b6a-ae79-0d00937d53a8";
     fsType = "btrfs";

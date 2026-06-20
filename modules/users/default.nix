@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
  imports = [
-    ./default_user.nix
+    ./default_users.nix
     ./autologin.nix
  ];
 }

@@ -25,6 +25,7 @@ in
       ./modules/settings.nix
       ./modules/usefull_tools.nix
       ./modules/users
+      ./modules/remote_access.nix
     ];
     # Configure all machines to respect the npins pin natively
     nix = {
@@ -62,15 +63,4 @@ in
       ./hosts/impermanent-xen
     ];
   };
-  nas0 = { name, nodes, ... }: {
-    deployment = {
-      targetHost = "nas0.blue-edmontosaurus.ts.net";
-      targetUser = "operateur";
-      tags = [ "domu" "remote" ];
-    };
-    imports = [
-      ./hosts/nas0-vm
-    ];
-  };
 }
-

@@ -11,7 +11,7 @@
   # enable Tailscale with config
   services.tailscale = {
     enable = true;
-    authKeyFile = "/run/secrets/ts-key.txt";
+    authKeyFile = "/persist/secrets/ts-key.txt";
   };
 
   ## enable mdns autodiscovery

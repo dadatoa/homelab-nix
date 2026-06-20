@@ -2,7 +2,7 @@
   preservation = {
     enable = true;
 
-    preserveAt."/persistent" = {
+    preserveAt."/persist" = {
       directories = [
         "/etc/nixos"
         # "/var/lib/bluetooth"
@@ -14,8 +14,6 @@
 
       files = [
         "/etc/ssh/authorized_keys.d/operateur"
-        { file = "/run/secrets/root-password.txt"; inInitrd = true; }
-        { file = "/run/secrets/ts-key.txt"; inInitrd = true; }
         { file = "/etc/machine-id"; inInitrd = true; }
       ];
       users.operateur = {
