@@ -1,7 +1,12 @@
 {
   
   fileSystems."/nix".neededForBoot = true;
-  fileSystems."/persistent".neededForBoot = true; # sometimes needed too
+  fileSystems."/persist" = {
+    neededForBoot = true; # sometimes needed too
+    device = "/dev/xvdb";
+    fsType = "btrfs";
+    options = ["subvol=persist" "compress=zstd" "noatime"];
+  };
   
   disko.devices = {
     nodev = {
@@ -72,9 +77,9 @@
                   mountOptions = [ "subvol=nix" "noatime" ];
                   mountpoint = "/nix";
                 };
-                "/persist" = {
-                  mountOptions = [ "subvol=persist" "noatime"];
-                  mountpoint = "/persist";
+                "/persistent" = {
+                  mountOptions = [ "subvol=persistent" "noatime"];
+                  mountpoint = "/persistent";
                 };
               };
             };
