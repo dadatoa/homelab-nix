@@ -36,13 +36,11 @@ jobs:
           echo "$SSH_KEY" > ~/.ssh/external-machine.key
           chmod 600 ~/.ssh/external-machine.key
           cat >>~/.ssh/config <<END
-          Host external-machine
-            HostName $SSH_HOST
+          Host *
             User $SSH_USER
             IdentityFile ~/.ssh/external-machine.key
             StrictHostKeyChecking no
           END
-          ssh-keyscan $SSH_HOST >> ~/.ssh/known_hosts
       - name: "deployment"
         run: |
           colmena build --on @dom0
