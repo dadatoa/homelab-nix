@@ -3,7 +3,6 @@
   
   imports = [
     ../../modules/profiles/xen_domU.nix
-    ../../modules/remote_access.nix
     ./preservation.nix
     ./disko.nix
     # ./services.nix
