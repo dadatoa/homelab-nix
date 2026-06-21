@@ -13,8 +13,6 @@
 
       files = [
         "/etc/ssh/authorized_keys.d/operateur"
-        { file = "/persistent/secrets/root-password.txt"; inInitrd = true; }
-        { file = "/persistent/secrets/ts-key.txt"; inInitrd = true; }
         { file = "/etc/machine-id"; inInitrd = true; }
       ];
 
