@@ -43,5 +43,5 @@ jobs:
           END
       - name: "deployment"
         run: |
-          colmena build --on @dom0
-          colmena apply boot --on @dom0
+          colmena build
+          colmena apply boot
