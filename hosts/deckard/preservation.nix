@@ -2,7 +2,7 @@
   preservation = {
     enable = true;
 
-    preserveAt."/persistent" = {
+    preserveAt."/persist" = {
       directories = [
         "/etc/nixos"
         # "/var/lib/bluetooth"
