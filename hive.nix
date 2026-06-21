@@ -47,7 +47,7 @@ in
       # Disable SSH deployment. This node will be skipped in a
       # normal`colmena apply`.
       # targetHost = null;
-      targetHost = "xplode.blue-edmontosaurus.ts.net";
+      targetHost = "deckard.blue-edmontosaurus.ts.net";
       targetUser = "operateur";
       tags = [ "domu" ];
     };
