@@ -37,9 +37,9 @@ in
   };
 
   # 4. Target Node Settings
-  xplode = { name, nodes, ... }: {
+  deckard = { name, nodes, ... }: {
     imports = [
-      ./hosts/xplode-vm
+      ./hosts/deckard
     ];
     deployment = {
       # Allow local deployment with `colmena apply-local`
@@ -57,7 +57,7 @@ in
     deployment = {
       targetHost = "xen.blue-edmontosaurus.ts.net";
       targetUser = "operateur";
-      tags = [ "dom0" "remote" ];
+      tags = [ "dom0" ];
     };
     imports = [
       ./hosts/impermanent-xen
