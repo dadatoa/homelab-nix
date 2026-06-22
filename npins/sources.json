@@ -23,6 +23,13 @@
       "url": "https://releases.nixos.org/nixos/26.05/nixos-26.05.1947.a0374025a863/nixexprs.tar.xz",
       "hash": "sha256-PoRRDfm1khYEJCk5KyX4Snud03VzRcmxKil5n6drTI0="
     },
+    "nixpkgs-unstable": {
+      "type": "Channel",
+      "name": "nixos-unstable",
+      "artifact": "nixexprs.tar.xz",
+      "url": "https://releases.nixos.org/nixos/unstable/nixos-26.11pre1017464.567a49d1913c/nixexprs.tar.xz",
+      "hash": "sha256-rcUHdUtJEvMdNEl2Wq+YpHraHKfcer3KsBscpZEF2Yg="
+    },
     "preservation": {
       "type": "Git",
       "repository": {

@@ -14,6 +14,6 @@
   time.timeZone = "Asia/Bangkok";
 
   # allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
+  # nixpkgs.config.allowUnfree = true;
+  # into meta config in hive.nix
 }

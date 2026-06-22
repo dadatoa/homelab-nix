@@ -6,17 +6,25 @@ in
   meta = {
     # 1. Use the pinned nixpkgs source folder from npins
     nixpkgs = import sources.nixpkgs {
-      stdenv.hostPlatform.system = "x86_64-linux";
-      config = {};
-      overlays = [];
     };
-    
     # 2. Pass npins references to nodes via special arguments
     specialArgs = { inherit sources; };
   };
 
   # 3. Apply settings universally across all nodes
-  defaults = {
+  defaults = { config, pkgs, sources, ... }:
+    let
+  # Initialize the unstable package set for this host's specific system architecture
+    unstable = import sources.nixpkgs-unstable {
+      system = pkgs.system;
+      config = {
+        # Allow unfree packages if needed (e.g., vscode, steam, etc.)
+        allowUnfree = true;
+      };
+    };
+    in
+    {
+    nixpkgs.hostPlatform.system = "x86_64-linux";
     imports = [
       (sources.disko + "/module.nix")
       (sources.preservation + "/module.nix")
@@ -30,10 +38,11 @@ in
     # Configure all machines to respect the npins pin natively
     nix = {
       channel.enable = false;
-      nixPath = [ "nixpkgs=${sources.nixpkgs}" ];
     };
     deployment.buildOnTarget = true;
-
+    environment.systemPackages = [
+      unstable.pkgs.tailscale
+    ];
   };
 
   # 4. Target Node Settings
