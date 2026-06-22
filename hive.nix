@@ -24,7 +24,7 @@ in
     };
     in
     {
-    nixpkgs.hostPlatform.system = "x86_64-linux";
+    nixpkgs.hostPlatform = "x86_64-linux";
     imports = [
       (sources.disko + "/module.nix")
       (sources.preservation + "/module.nix")
@@ -41,8 +41,9 @@ in
     };
     deployment.buildOnTarget = true;
     environment.systemPackages = [
-      unstable.pkgs.tailscale
+      # unstable.pkgs.tailscale
     ];
+    services.tailscale.package = unstable.pkgs.tailscale;
   };
 
   # 4. Target Node Settings
